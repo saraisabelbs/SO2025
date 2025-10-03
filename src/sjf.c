@@ -4,13 +4,12 @@
 #include "msg.h"
 #include <unistd.h>
 
-
-//Se o CPU está ocupado → deixa acabar.
-//está livre → escolhe da fila o processo com menor time_ms.
+// Algoritmo Shortest Job First (não preemptivo)
 void sjf_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
     if (*cpu_task) {
         (*cpu_task)->ellapsed_time_ms += TICKS_MS;
         if ((*cpu_task)->ellapsed_time_ms >= (*cpu_task)->time_ms) {
+            // Task terminou
             msg_t msg = {
                 .pid = (*cpu_task)->pid,
                 .request = PROCESS_REQUEST_DONE,
@@ -19,30 +18,37 @@ void sjf_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
             if (write((*cpu_task)->sockfd, &msg, sizeof(msg_t)) != sizeof(msg_t)) {
                 perror("write");
             }
-            free((*cpu_task));
-            (*cpu_task) = NULL;
+            free(*cpu_task);
+            *cpu_task = NULL;
         }
     }
-    if (*cpu_task == NULL) {
-        // Escolher o processo mais curto da fila
-        pcb_t *shortest = NULL, *prev = NULL, *curr = rq->head, *prev_shortest = NULL;
+
+    // Se a CPU estiver livre, escolher o job mais curto da fila
+    if (*cpu_task == NULL && rq->head) {
+        queue_elem_t *curr = rq->head;
+        queue_elem_t *prev = NULL;
+
+        queue_elem_t *shortest_prev = NULL;
+        queue_elem_t *shortest_elem = rq->head;
 
         while (curr) {
-            if (!shortest || curr->time_ms < shortest->time_ms) {
-                shortest = curr;
-                prev_shortest = prev;
+            if (curr->pcb->time_ms < shortest_elem->pcb->time_ms) {
+                shortest_elem = curr;
+                shortest_prev = prev;
             }
             prev = curr;
             curr = curr->next;
         }
 
-        if (shortest) {
-            // Remover da fila
-            if (prev_shortest) prev_shortest->next = shortest->next;
-            else rq->head = shortest->next;
-
-            shortest->next = NULL;
-            *cpu_task = shortest;
+        // Retira o mais curto da fila
+        if (shortest_prev) {
+            shortest_prev->next = shortest_elem->next;
+        } else {
+            rq->head = shortest_elem->next;
         }
+
+        shortest_elem->next = NULL;
+        *cpu_task = shortest_elem->pcb;
+        free(shortest_elem); // libertar o wrapper da queue
     }
 }

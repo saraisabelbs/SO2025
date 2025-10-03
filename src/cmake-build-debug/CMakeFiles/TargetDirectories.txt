@@ -1,0 +1,5 @@
+C:/Users/Sara Serrano/CLionProjects/SO2025-2/src/cmake-build-debug/CMakeFiles/scheduler.dir
+C:/Users/Sara Serrano/CLionProjects/SO2025-2/src/cmake-build-debug/CMakeFiles/app.dir
+C:/Users/Sara Serrano/CLionProjects/SO2025-2/src/cmake-build-debug/CMakeFiles/app-io.dir
+C:/Users/Sara Serrano/CLionProjects/SO2025-2/src/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Sara Serrano/CLionProjects/SO2025-2/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
