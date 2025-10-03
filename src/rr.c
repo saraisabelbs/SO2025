@@ -6,7 +6,7 @@
 
 #define QUANTUM_MS 500
 
-
+//help
 //Cada processo roda no CPU no máximo 500ms (TICKS_MS já é o "tick", tu tens de contar).
 //Se não acabou, volta para o fim da fila.
 void rr_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
