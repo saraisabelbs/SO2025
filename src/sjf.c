@@ -40,7 +40,7 @@ void sjf_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
             curr = curr->next;
         }
 
-        // Retira o mais curto da fila
+        //Retira o mais curto da fila
         if (shortest_prev) {
             shortest_prev->next = shortest_elem->next;
         } else {
