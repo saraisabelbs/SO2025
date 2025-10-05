@@ -1,19 +1,19 @@
 #include "mlfq.h"
-#include "fifo.h"   // para usar fifo_scheduler
 #include <stdio.h>
 #include <stdlib.h>
 #include "msg.h"
 #include <unistd.h>
 
 #define NUM_QUEUES 3     // três níveis de prioridade
-#define QUANTUM1 1000    // 1 segundo para fila 0
-#define QUANTUM2 2000    // 2 segundos para fila 1
-#define QUANTUM3 4000    // 4 segundos para fila 2
+#define QUANTUM1 500    // 500 ms em todas as filas
+#define QUANTUM2 500
+#define QUANTUM3 500
 
 void mlfq_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
     static int current_queue = 0; // nível de prioridade atual
     static uint32_t quantum_time = 0; // tempo decorrido no quantum atual
 
+    // Atualiza o tempo total e o tempo dentro do quantum atual.
     if (*cpu_task) {
         (*cpu_task)->ellapsed_time_ms += TICKS_MS;
         quantum_time += TICKS_MS;

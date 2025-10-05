@@ -41,7 +41,8 @@ typedef struct {
 typedef struct {
     pid_t pid;                      // Process ID
     process_request_t request;      // Request type
-    uint32_t time_ms;               // Time information
+    uint32_t time_ms;
+    uint32_t arrival_time_ms;// Time information
 } msg_t;
 
 

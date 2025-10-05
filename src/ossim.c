@@ -151,6 +151,7 @@ void check_new_commands(queue_t *command_queue, queue_t *blocked_queue, queue_t 
             current_pcb->time_ms = msg.time_ms;
             current_pcb->ellapsed_time_ms = 0;
             current_pcb->status = TASK_RUNNING;
+            current_pcb->arrival_time_ms = current_time_ms;
             enqueue_pcb(ready_queue, current_pcb);
             DBG("Process %d requested RUN for %d ms\n", current_pcb->pid, current_pcb->time_ms);
         } else if (msg.request == PROCESS_REQUEST_BLOCK) {

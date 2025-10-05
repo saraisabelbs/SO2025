@@ -33,6 +33,7 @@ void sjf_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
         queue_elem_t *shortest_prev = NULL;
         queue_elem_t *shortest_elem = rq->head;
 
+        // Este loop procura o processo mais curto dentro da fila (shortest_elem).
         while (curr != NULL) {
             if (curr->pcb->time_ms < shortest_elem->pcb->time_ms) {
                 shortest_elem = curr;
@@ -56,6 +57,9 @@ void sjf_scheduler(uint32_t current_time_ms, queue_t *rq, pcb_t **cpu_task) {
         shortest_elem->next = NULL;
         *cpu_task = shortest_elem->pcb;
         free(shortest_elem); // libertar o wrapper da queue
+
+
+        (*cpu_task)->ellapsed_time_ms = 0;  // <– reinicia o tempo decorrido
 
         // Envia mensagem RUN para a app escolhida
         msg_t msg = {
