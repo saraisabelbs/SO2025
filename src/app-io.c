@@ -8,7 +8,6 @@
 
 
 #include "debug.h"
-
 #include "msg.h"
 #include "burst_queue.h"
 
